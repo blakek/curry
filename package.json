@@ -1,6 +1,6 @@
 {
   "name": "@blakek/curry",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist/curry.cjs.js",
   "module": "dist/curry.esm.js",
   "browser": "dist/curry.umd.js",
