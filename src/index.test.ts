@@ -1,5 +1,5 @@
 import test from 'ava';
-import { curry, curryRight } from './index';
+import { curry, curryRight, VariadicCurry } from './index';
 
 test('curries simple function arguments', t => {
   const add = (a: number, b: number) => a + b;
@@ -11,13 +11,16 @@ test('curries simple function arguments', t => {
 
 test('can manually set arity', t => {
   const add = (...args: number[]) => args.reduce((a, b) => a + b, 0);
-  const addFourItems = curry(add, 4);
 
+  const addFourItems = curry(add, 4) as VariadicCurry<
+    [number, number, number, number],
+    number
+  >;
+
+  t.is(typeof addFourItems(1, 2, 3), 'function');
   t.is(addFourItems(1)(2)(3)(4), 10);
   t.is(addFourItems(5, 6, 7, 8), 26);
   t.is(addFourItems(2, 1)(2, 2), 7);
-
-  t.is(typeof addFourItems(1, 2, 3), 'function');
 });
 
 test('curryRight reverses arguments', t => {

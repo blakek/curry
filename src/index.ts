@@ -1,4 +1,13 @@
-export function curry(fn: Function, arity: number = fn.length): any {
+import { Curry1, Curry2, Curry3, Curry4, Curry5, VariadicCurry } from './types';
+
+export { Curry1, Curry2, Curry3, Curry4, Curry5, VariadicCurry };
+
+export function curry<T extends any[], R>(
+  fn: (...args: T) => R,
+  arity?: number
+): VariadicCurry<T, R>;
+
+export function curry(fn: Function, arity: number = fn.length) {
   return function curried(...args: any[]) {
     if (args.length >= arity) {
       return fn(...args.slice(0, arity));
@@ -8,7 +17,12 @@ export function curry(fn: Function, arity: number = fn.length): any {
   };
 }
 
-export function curryRight(fn: Function, arity: number = fn.length): any {
+export function curryRight<T extends any[], R>(
+  fn: (...args: T) => R,
+  arity?: number
+): VariadicCurry<T, R>;
+
+export function curryRight(fn: Function, arity: number = fn.length) {
   return function curried(...args: any[]) {
     if (args.length >= arity) {
       return fn(...args.slice(0, arity).reverse());
@@ -17,5 +31,3 @@ export function curryRight(fn: Function, arity: number = fn.length): any {
     return (...newArgs: any[]) => curried(...args, ...newArgs);
   };
 }
-
-export default curry;
