@@ -1,6 +1,6 @@
-import { Curry1, Curry2, Curry3, Curry4, Curry5, VariadicCurry } from './types';
+import { VariadicCurry } from './types';
 
-export { Curry1, Curry2, Curry3, Curry4, Curry5, VariadicCurry };
+export * from './types';
 
 export function curry<T extends any[], R>(
   fn: (...args: T) => R,
