@@ -2,7 +2,11 @@
 
 > 🍛 Simple curry functions
 
-A simple helper to help apply arguments to a function over time.
+A simple helper to wrap a function and gradually accept (i.e. partially apply)
+arguments.
+
+This package is technically a helper partial application, but `curry` is much
+easier to remember and a nicer package function name than `partiallyApply`.
 
 ## Install
 
@@ -39,6 +43,25 @@ const getName = curryRight(prop)('name');
 getName({ name: 'John Smith', age: 42 }); //» 'John Smith'
 ```
 
+### TypeScript
+
+The types of many functions are inferred. However, some functions, such as
+variadic functions, need an explicit type:
+
+```ts
+const add = (...args: number[]) => args.reduce((a, b) => a + b, 0);
+
+const addFourItems = curry(add, 4) as VariadicCurry<
+  // argument types
+  [number, number, number, number],
+  // return type
+  number
+>;
+
+// Includes helpers for functions accepting <=5 args
+const addTwo = curry(add, 2) as Curry2<number, number, number>;
+```
+
 ## API
 
 ### `curry`
@@ -47,8 +70,8 @@ getName({ name: 'John Smith', age: 42 }); //» 'John Smith'
 curry(fn: Function, arity?: number): any;
 ```
 
-Returns functions that take in the arguments of another function until all have
-been provided.
+Returns functions that take in the arguments of a function until all have been
+provided.
 
 ### `curryRight`
 
@@ -58,7 +81,9 @@ curryRight(fn: Function, arity?: number): any;
 
 Same as `curry`, but reverses all arguments once the limit has been provided.
 Provided for the common use-case of needing to supply context-specific arguments
-before providing the first arguments. For example:
+before providing the first arguments.
+
+For example:
 
 ```js
 import { curryRight } from '@blakek/curry';
